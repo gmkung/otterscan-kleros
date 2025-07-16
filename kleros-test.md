@@ -46,11 +46,31 @@ Based on the provided cURL demo, we can test these addresses:
 
 ## Testing
 
-The development server is running at http://localhost:5174/
+The development server is running at http://localhost:5173/
 
-To test:
-1. Navigate to one of the test addresses above
-2. Look for the Kleros logo and project name
-3. Check the overview page for detailed Kleros information
+### **Kleros Scout Display (Existing Tags)**
+To test addresses with existing tags:
+1. Navigate to: `http://localhost:5173/address/0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC`
+2. Look for the Kleros logo and "OpenSea: Seaport 1.5" project name
+3. Check the overview page for detailed Kleros information with verified domains
 
-Note: Requires internet connection to fetch from Kleros Scout API.
+### **Kleros Curate Submission (No Tags)**
+To test the submission feature for addresses without tags:
+1. Navigate to: `http://localhost:5173/address/0xed2d13a70acbd61074fc56bd0d0845e35f793e5e`
+2. Look for "No Kleros Scout tags found" message
+3. Click "Submit Address Tag" button
+4. Fill out the form and test the submission flow
+
+### **Submission Features:**
+✅ **Form Pre-filling**: Address auto-populated in CAIP-10 format (eip155:chainId:address)
+✅ **Cost Calculation**: Real-time cost fetching from Gnosis chain (xDai)
+✅ **Network Switching**: Prompts switch to Gnosis chain if needed
+✅ **IPFS Upload**: Uploads JSON metadata to Kleros IPFS endpoint  
+✅ **Contract Interaction**: Submits to Kleros Curate registry on Gnosis
+✅ **Error Handling**: Comprehensive validation and error messages
+✅ **Success Flow**: Transaction hash display and form reset
+
+### **Full Flow:**
+1. Form validation → 2. Network check/switch → 3. IPFS upload → 4. Contract call → 5. Success
+
+Note: Requires internet connection and a Web3 wallet for submissions.

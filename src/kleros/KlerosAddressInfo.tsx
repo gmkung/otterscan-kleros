@@ -1,15 +1,51 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import InfoRow from "../components/InfoRow";
 import { KlerosAddressTag } from "./useKleros";
+import { ChecksummedAddress } from "../types";
+import { RuntimeContext } from "../useRuntime";
 import KlerosLogo from "./KlerosLogo";
+import KlerosSubmissionModal from "./KlerosSubmissionModal";
 
 type KlerosAddressInfoProps = {
-  tags: KlerosAddressTag[];
+  tags: KlerosAddressTag[] | null | undefined;
+  address: ChecksummedAddress;
 };
 
-const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags }) => {
-  if (tags.length === 0) {
-    return null;
+const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags, address }) => {
+  const { provider } = useContext(RuntimeContext);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Show submit button when no tags are found
+  if (!tags || tags.length === 0) {
+    return (
+      <>
+        <InfoRow title={
+          <div className="flex items-center space-x-2">
+            <KlerosLogo />
+            <span>Project</span>
+          </div>
+        }>
+          <div className="flex items-center justify-between">
+            <span className="text-gray-600 dark:text-gray-400 text-sm">
+              No Kleros Scout tags found for this address.
+            </span>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-3 py-1 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
+            >
+              Submit Address Tag
+            </button>
+          </div>
+        </InfoRow>
+        
+        <KlerosSubmissionModal
+          address={address}
+          chainId={provider._network.chainId}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      </>
+    );
   }
 
   return (

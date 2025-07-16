@@ -208,9 +208,7 @@ const AddressTransactionResults: FC = () => {
             </InfoRow>
           )}
           {config.experimental && <ProxyInfo address={address} />}
-          {klerosTags && klerosTags.length > 0 && (
-            <KlerosAddressInfo tags={klerosTags} />
-          )}
+          <KlerosAddressInfo tags={klerosTags} address={address} />
         </BlockNumberContext.Provider>
         <NavBar address={address} page={page} controller={controller} />
         <StandardScrollableTable isAuto={true}>
