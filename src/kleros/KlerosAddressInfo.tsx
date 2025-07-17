@@ -120,7 +120,7 @@ const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags, address }) 
               {tag.verified_domains && tag.verified_domains.length > 0 && (
                 <div>
                   <span className="text-xs text-gray-500 mb-1 block">
-                    Trusted domains ({tag.verified_domains.length}):
+                    Trusted dApp domains ({tag.verified_domains.length}):
                   </span>
                   <div className="flex flex-wrap gap-1">
                     {tag.verified_domains.map((domain, idx) => (
