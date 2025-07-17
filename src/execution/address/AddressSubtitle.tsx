@@ -13,7 +13,7 @@ import StandardSubtitle from "../../components/StandardSubtitle";
 import { useChainInfo } from "../../useChainInfo";
 import { useResolvedAddress } from "../../useResolvedAddresses";
 import { RuntimeContext } from "../../useRuntime";
-import { useKlerosAddressTags } from "../../kleros/useKleros";
+import { KlerosAddressTag } from "../../kleros/useKleros";
 import KlerosTagBadge from "../../kleros/KlerosTagBadge";
 import { AddressAwareComponentProps } from "../types";
 import AddressAttributes from "./AddressAttributes";
@@ -22,12 +22,18 @@ import EditableAddressTag, { clearAllLabels } from "./EditableAddressTag";
 type AddressSubtitleProps = AddressAwareComponentProps & {
   isENS: boolean | undefined;
   addressOrName: string;
+  klerosTags: KlerosAddressTag[] | null | undefined;
+  hasCode: boolean | undefined;
+  onOpenKlerosModal?: () => void;
 };
 
 const AddressSubtitle: FC<AddressSubtitleProps> = ({
   address,
   isENS,
   addressOrName,
+  klerosTags,
+  hasCode,
+  onOpenKlerosModal,
 }) => {
   const { config, provider } = useContext(RuntimeContext);
   const { faucets } = useChainInfo();
@@ -44,7 +50,6 @@ const AddressSubtitle: FC<AddressSubtitleProps> = ({
     resolvedNameTrusted = true;
   }
 
-  const klerosTags = useKlerosAddressTags(address);
   const [editingAddressTag, setEditingAddressTag] = useState<boolean>(false);
 
   return (
@@ -107,6 +112,15 @@ const AddressSubtitle: FC<AddressSubtitleProps> = ({
               <FontAwesomeIcon icon={faTrash} size="1x" />
             </button>
           </div>
+        )}
+        {(!klerosTags || klerosTags.length === 0) && hasCode && onOpenKlerosModal && (
+          <button
+            onClick={onOpenKlerosModal}
+            className="text-sm text-gray-400 hover:text-blue-500 transition-colors"
+            title="Add project information"
+          >
+            • Contribute project info
+          </button>
         )}
       </div>
     </StandardSubtitle>

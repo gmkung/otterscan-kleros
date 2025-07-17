@@ -30,7 +30,6 @@ import { useResolvedAddress } from "../../useResolvedAddresses";
 import { RuntimeContext } from "../../useRuntime";
 import { usePageTitle } from "../../useTitle";
 import { commify } from "../../utils/utils";
-import { useKlerosAddressTags } from "../../kleros/useKleros";
 import KlerosAddressInfo from "../../kleros/KlerosAddressInfo";
 import { type AddressOutletContext } from "../AddressMainPage";
 import DecoratedAddressLink from "../components/DecoratedAddressLink";
@@ -57,12 +56,10 @@ const ProxyInfo: FC<AddressAwareComponentProps> = ({ address }) => {
 };
 
 const AddressTransactionResults: FC = () => {
-  const { address, hasCode } = useOutletContext() as AddressOutletContext;
+  const { address, hasCode, klerosTags } = useOutletContext() as AddressOutletContext;
   const { config, provider } = useContext(RuntimeContext);
   const [feeDisplay, feeDisplayToggler] = useToggler(FeeDisplay);
   const [valueDisplay, valueDisplayToggler] = useToggler(ValueDisplay);
-  
-  const klerosTags = useKlerosAddressTags(address);
 
   const { addressOrName, direction } = useParams();
   if (addressOrName === undefined) {

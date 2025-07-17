@@ -3,7 +3,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TabGroup, TabList, TabPanels } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Outlet, useNavigate, useParams, useSearchParams } from "react-router";
 import AddressOrENSNameNotFound from "../components/AddressOrENSNameNotFound";
 import NavTab from "../components/NavTab";
@@ -16,6 +16,8 @@ import { ChecksummedAddress } from "../types";
 import { hasCodeQuery } from "../useErigonHooks";
 import { useAddressOrENS } from "../useResolvedAddresses";
 import { RuntimeContext } from "../useRuntime";
+import { useKlerosAddressTags } from "../kleros/useKleros";
+import KlerosSubmissionModal from "../kleros/KlerosSubmissionModal";
 import AddressSubtitle from "./address/AddressSubtitle";
 import { AddressAwareComponentProps } from "./types";
 
@@ -47,6 +49,7 @@ export type AddressOutletContext = {
   hasCode: boolean | undefined;
   match: Match | null | undefined;
   whatsabiMatch: Match | null | undefined;
+  klerosTags: ReturnType<typeof useKlerosAddressTags>;
 };
 
 const AddressMainPage: React.FC = () => {
@@ -89,6 +92,9 @@ const AddressMainPage: React.FC = () => {
     config.assetsURLPrefix,
   );
 
+  const klerosTags = useKlerosAddressTags(checksummedAddress);
+  const [isKlerosModalOpen, setIsKlerosModalOpen] = useState(false);
+
   return (
     <StandardFrame>
       {error ? (
@@ -106,6 +112,9 @@ const AddressMainPage: React.FC = () => {
               addressOrName={addressOrName}
               address={checksummedAddress}
               isENS={isENS}
+              klerosTags={klerosTags}
+              hasCode={hasCode}
+              onOpenKlerosModal={() => setIsKlerosModalOpen(true)}
             />
             <TabGroup>
               <TabList className="flex space-x-2 rounded-t-lg border-l border-r border-t bg-white overflow-x-auto whitespace-nowrap">
@@ -176,10 +185,19 @@ const AddressMainPage: React.FC = () => {
                     hasCode,
                     match,
                     whatsabiMatch,
+                    klerosTags,
                   }}
                 />
               </TabPanels>
             </TabGroup>
+            {checksummedAddress && (
+              <KlerosSubmissionModal
+                address={checksummedAddress}
+                chainId={provider._network.chainId}
+                isOpen={isKlerosModalOpen}
+                onClose={() => setIsKlerosModalOpen(false)}
+              />
+            )}
           </>
         )
       )}
