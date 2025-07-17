@@ -6,5 +6,11 @@
     "deploymentEnabled": {
       "dependabot/*": false
     }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/api/kleros/(.*)",
+      "destination": "https://scout-api.kleros.link/$1"
+    }
+  ]
 }
