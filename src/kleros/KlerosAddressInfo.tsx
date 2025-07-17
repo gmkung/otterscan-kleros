@@ -19,12 +19,14 @@ const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags, address }) 
   if (!tags || tags.length === 0) {
     return (
       <>
-        <InfoRow title={
-          <div className="flex items-center space-x-2">
-            <KlerosLogo />
-            <span>Project</span>
-          </div>
-        }>
+        <InfoRow 
+          noColon
+          title={
+            <div className="flex items-center space-x-2 whitespace-nowrap">
+              <KlerosLogo />
+              <span>Project:</span>
+            </div>
+          }>
           <div className="flex items-center justify-between">
             <span className="text-gray-600 dark:text-gray-400 text-sm">
               No Kleros Scout tags found for this address.
@@ -52,12 +54,14 @@ const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags, address }) 
     <>
       {tags.map((tag, index) => (
         <React.Fragment key={index}>
-          <InfoRow title={
-            <div className="flex items-center space-x-2">
-              <KlerosLogo />
-              <span>Project</span>
-            </div>
-          }>
+          <InfoRow 
+            noColon
+            title={
+              <div className="flex items-center space-x-2 whitespace-nowrap">
+                <KlerosLogo />
+                <span>Project:</span>
+              </div>
+            }>
             <div className="space-y-1">
               {/* Project name and tag */}
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -112,17 +116,17 @@ const KlerosAddressInfo: React.FC<KlerosAddressInfoProps> = ({ tags, address }) 
                 </div>
               )}
 
-              {/* Verified domains - show all but in a compact grid */}
+              {/* Verified domains - show all but in a compact flexbox */}
               {tag.verified_domains && tag.verified_domains.length > 0 && (
                 <div>
                   <span className="text-xs text-gray-500 mb-1 block">
                     Verified domains ({tag.verified_domains.length}):
                   </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
+                  <div className="flex flex-wrap gap-1">
                     {tag.verified_domains.map((domain, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 rounded truncate"
+                        className="inline-flex items-center px-1.5 py-0.5 text-xs font-medium bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100 rounded"
                         title={domain}
                       >
                         {domain}
